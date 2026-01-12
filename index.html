@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda - Vero & Angel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --secondary-bg: #f9f9f9;
+            --accent-color: #b97600;
+            /* Dorado */
+            --text-main: #333333;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--secondary-bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* Bloqueo de scroll inicial para el modal de bienvenida */
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        .serif {
+            font-family: 'Libre Baskerville', serif;
+        }
+
+        /* Ventana Flotante de Bienvenida */
+        #welcome-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.98);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5000;
+            backdrop-blur: 10px;
+        }
+
+        .welcome-card {
+            background: white;
+            padding: 40px 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f0f0f0;
+        }
+
+        .hero-section {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.3)), url('https://lh3.googleusercontent.com/u/0/d/1LR9cNOTKwwM8XrhIzL8s5tG_u16IY89O') no-repeat;
+            background-size: cover;
+            background-position: center center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            width: 100%;
+        }
+
+        .hero-content {
+            transform: translateY(20px);
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .nos-casamos-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto 1rem auto;
+            opacity: 0.9;
+        }
+
+        .nos-casamos-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: white;
+            margin: 0 15px;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background-color: white;
+            margin: 20px auto;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-12px);
+            }
+
+            60% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .scroll-arrow-container {
+            position: absolute;
+            bottom: 120px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 30;
+            width: 100%;
+        }
+
+        .scroll-arrow {
+            animation: bounce 2.5s infinite;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .music-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 54px;
+            height: 54px;
+            background-color: rgba(185, 118, 0, 0.85);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+        }
+
+        .twinkle-effect {
+            animation: twinkle 2s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(185, 118, 0, 0.6);
+            }
+
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 20px 10px rgba(185, 118, 0, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(185, 118, 0, 0);
+            }
+        }
+
+        .music-btn.playing {
+            animation: spin 5s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .btn-gold-action {
+            display: inline-block;
+            width: 100%;
+            max-width: 260px;
+            background-color: var(--accent-color);
+            color: white;
+            border: 1.5px solid var(--accent-color);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+            font-size: 11px;
+            padding: 14px 10px;
+            text-align: center;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .btn-outline-gold {
+            display: inline-block;
+            width: 100%;
+            max-width: 260px;
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 1.5px solid var(--accent-color);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+            font-size: 11px;
+            padding: 14px 10px;
+            text-align: center;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .countdown-box {
+            background: white;
+            padding: 15px 5px;
+            border-radius: 0;
+            flex: 1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border-right: 1px solid #f0f0f0;
+        }
+
+        .countdown-box:last-child {
+            border-right: none;
+        }
+
+        .section-icon-prominent {
+            margin: 20px 0 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+        }
+
+        .section-icon-prominent img,
+        .section-icon-prominent svg {
+            max-height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .photo-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 15px;
+            padding: 10px 20px 30px 20px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .photo-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .polaroid-item {
+            flex: 0 0 88%;
+            max-width: 450px;
+            scroll-snap-align: center;
+            background: white;
+            padding: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        @media (min-width: 768px) {
+            .polaroid-item {
+                flex: 0 0 35%;
+            }
+
+            .countdown-box {
+                border-radius: 4px;
+                margin: 0 10px;
+                flex: none;
+                min-width: 100px;
+                border-right: none;
+            }
+        }
+
+        .polaroid-item img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 1px;
+        }
+
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body class="modal-open">
+
+    <!-- VENTANA FLOTANTE DE BIENVENIDA -->
+    <div id="welcome-overlay">
+        <div class="welcome-card">
+            <h2 class="serif text-2xl mb-2">Bienvenidos a la invitación de</h2>
+            <h1 class="serif text-3xl text-[#b97600] mb-6">Vero y Angel</h1>
+            <p class="text-sm text-gray-500 mb-8 px-4">La música de fondo es parte de la experiencia</p>
+
+            <div class="flex flex-col gap-3 items-center">
+                <button onclick="startApp(true)" class="btn-gold-action">Ingresar con música</button>
+                <button onclick="startApp(false)" class="btn-outline-gold">Ingresar sin música</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón de música -->
+    <div id="music-trigger" class="music-btn twinkle-effect">
+        <i data-lucide="music" size="24"></i>
+    </div>
+    <audio id="wedding-audio" loop>
+        <source
+            src="https://www.dropbox.com/scl/fi/5vas8sb4ml45rszuyx14t/Gondwana_-_Dulce_Amor_solo_un_latido_-mp3.pm.mp3?rlkey=28yvx0pp8b1zf3fi3mopm25j8&st=vorltckj&raw=1"
+            type="audio/mpeg">
+    </audio>
+
+    <!-- HERO -->
+    <header class="hero-section">
+        <div class="hero-content">
+            <div class="nos-casamos-wrapper">
+                <div class="nos-casamos-line"></div>
+                <p class="uppercase tracking-[0.3em] text-[10px]">¡Nos Casamos!</p>
+                <div class="nos-casamos-line"></div>
+            </div>
+            <h1 class="text-5xl md:text-7xl mb-2 italic text-white">Vero & Angel</h1>
+            <div class="divider"></div>
+            <p class="text-lg serif tracking-widest opacity-90 text-white">21 de Marzo de 2026</p>
+        </div>
+
+        <div class="scroll-arrow-container">
+            <div class="scroll-arrow"
+                onclick="document.getElementById('countdown-section').scrollIntoView({behavior: 'smooth'})">
+                <i data-lucide="chevron-down" size="40" stroke-width="2" color="white"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- COUNTDOWN -->
+    <section id="countdown-section" class="bg-white text-center py-0 md:py-10">
+        <div id="countdown" class="flex justify-between md:justify-center w-full">
+            <div class="countdown-box"><span id="days" class="block text-2xl font-bold">00</span><span
+                    class="text-[9px] uppercase text-gray-400">Días</span></div>
+            <div class="countdown-box"><span id="hours" class="block text-2xl font-bold">00</span><span
+                    class="text-[9px] uppercase text-gray-400">Hs</span></div>
+            <div class="countdown-box"><span id="minutes" class="block text-2xl font-bold">00</span><span
+                    class="text-[9px] uppercase text-gray-400">Min</span></div>
+            <div class="countdown-box"><span id="seconds" class="block text-2xl font-bold">00</span><span
+                    class="text-[9px] uppercase text-gray-400">Seg</span></div>
+        </div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section class="bg-white py-16">
+        <div class="max-w-xl mx-auto px-6 text-center mb-10">
+            <h2 class="text-xl md:text-2xl italic leading-relaxed text-gray-700">
+                "… pero al ver tu sonrisa todo va bien. Dulce Amor!"
+            </h2>
+        </div>
+        <div class="photo-slider">
+            <div class="polaroid-item">
+                <img src="https://lh3.googleusercontent.com/u/0/d/1nu_uQxska2GE0s0bjTl_yTkO87Yanlad" alt="atardecer">
+            </div>
+            <div class="polaroid-item">
+                <img src="https://lh3.googleusercontent.com/u/0/d/1InNFcI5q7SVQKCcPhmfgxZF76gIpZwOY"
+                    alt="inclinado paris londres">
+            </div>
+            <div class="polaroid-item">
+                <img src="https://lh3.googleusercontent.com/u/0/d/10s3yshqyhTdL5OTKQPVEamQCBTgQxLit" alt="ramo al aire">
+            </div>
+            <div class="polaroid-item">
+                <img src="https://lh3.googleusercontent.com/u/0/d/1H9NRyChKYNvbfFXGBlD1vvJ1GTTv71ZK" alt="sentados">
+            </div>
+            <div class="polaroid-item">
+                <img src="https://lh3.googleusercontent.com/u/0/d/1qPeq6PKO5lTjWZ-Cmas6A4uHI8s56Gqj" alt="Miradas">
+            </div>
+            <div class="polaroid-item">
+                <img src="https://lh3.googleusercontent.com/u/0/d/19mOKWwf3sq3SmkoB2FQigZHieBgYT9VM"
+                    alt="poste Inclinados">
+            </div>
+        </div>
+    </section>
+
+    <!-- EVENTOS -->
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-6 px-6 pb-12">
+        <div class="bg-white p-8 text-center card-shadow border-t-4 border-[#b97600] flex flex-col items-center">
+            <h3 class="text-xl italic tracking-wide">Ceremonia</h3>
+            <div class="section-icon-prominent">
+                <img src="https://www.dropbox.com/scl/fi/ofl48cieyl83tdk2288jx/Anillos.png?rlkey=9df2tlhwc0ntxryzuugo5i9lw&st=4whkq6oi&raw=1"
+                    alt="Icono Ceremonia">
+            </div>
+            <p class="text-sm text-gray-500 italic mb-1">16:30 Horas</p>
+            <p class="text-sm font-semibold mb-8">Los Clarines 3050, Macul</p>
+            <a href="https://www.google.com/maps/search/?api=1&query=Los+Clarines+3050+Macul" target="_blank"
+                class="btn-gold-action">¿Cómo llegar?</a>
+        </div>
+
+        <div class="bg-white p-8 text-center card-shadow border-t-4 border-[#b97600] flex flex-col items-center">
+            <h3 class="text-xl italic tracking-wide">Celebración</h3>
+            <div class="section-icon-prominent">
+                <img src="https://www.dropbox.com/scl/fi/34afeqp3qgamf71yhv7ya/copas.png?rlkey=zix5lafqq2jz3bmkvnja2nf6v&st=zxijnkaq&raw=1"
+                    alt="Icono Celebración"
+                    onerror="this.src='https://cdn-icons-png.flaticon.com/512/3168/3168014.png'">
+            </div>
+            <p class="text-sm text-gray-500 italic mb-1">18:30 Horas</p>
+            <p class="text-sm font-semibold mb-8">Los Clarines 3050, Macul</p>
+            <a href="https://www.google.com/maps/search/?api=1&query=Los+Clarines+3050+Macul" target="_blank"
+                class="btn-gold-action">¿Cómo llegar?</a>
+        </div>
+    </div>
+
+    <!-- REGALOS Y DRESS CODE -->
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-6 px-6 pb-12">
+        <div class="bg-white p-8 text-center card-shadow border-t-4 border-[#b97600] flex flex-col items-center">
+            <h3 class="text-xl italic tracking-wide">Regalos</h3>
+            <div class="section-icon-prominent">
+                <img src="https://www.dropbox.com/scl/fi/qgskn0bla76fzy4lluhli/Regalos.png?rlkey=limq30bzuece30bqhkjhngezr&st=rd4xltkw&raw=1"
+                    alt="Icono Regalos">
+            </div>
+            <p class="text-sm text-gray-500 italic mb-8 max-w-[280px]">
+                Si quieres ayudarnos a seguir sumando millas y crear recuerdos, cualquier aporte será recibido con
+                cariño. Prometemos tenerte presente en cada viaje.
+            </p>
+            <button onclick="showGiftModal()" class="btn-gold-action">Ver cuenta bancaria</button>
+        </div>
+
+        <div class="bg-white p-8 text-center card-shadow border-t-4 border-[#b97600] flex flex-col items-center">
+            <h3 class="text-xl italic tracking-wide">Código de vestimenta</h3>
+            <div class="section-icon-prominent">
+                <img src="https://www.dropbox.com/scl/fi/kq5dicq4nsnn0o6dehihz/Vestimenta.png?rlkey=rgnj1dhh29hrt8srvy7ozb9yd&st=oaz5k8xq&raw=1"
+                    alt="Icono Dress Code">
+            </div>
+            <p class="text-sm text-gray-500 italic mb-8 max-w-[280px]">
+                ¡Queremos que te veas increíble y disfrutes con nosotros esta noche especial!
+            </p>
+            <button onclick="showDressCodeModal()" class="btn-gold-action">Ver referencia</button>
+        </div>
+    </div>
+
+    <!-- RSVP -->
+    <section id="rsvp" class="bg-[#fcfaf8] py-16 px-6">
+        <div class="max-w-md mx-auto bg-white p-8 card-shadow rounded-sm border-t-4 border-[#b97600]">
+            <h2 class="text-xl italic text-center mb-6">Confirmar Asistencia</h2>
+            <form id="rsvp-form" class="space-y-6">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Nombre
+                        Completo</label>
+                    <input id="form-name" type="text"
+                        class="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#b97600] text-sm"
+                        required>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">RUT</label>
+                    <input id="form-rut" type="text" placeholder="12.345.678-9"
+                        class="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#b97600] text-sm"
+                        required>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">¿Asistirás?</label>
+                    <select id="form-attendance"
+                        class="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#b97600] text-sm bg-transparent">
+                        <option value="Sí, con gusto">Sí, ¡No me lo pierdo!</option>
+                        <option value="No podré asistir">Lo siento, no podré ir</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-gold-action w-full" style="max-width:none">Enviar WhatsApp</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- MODALES DE INFO -->
+    <div id="gift-modal"
+        class="fixed inset-0 bg-black/70 hidden items-center justify-center z-[2000] p-6 backdrop-blur-sm"
+        onclick="hideGiftModal()">
+        <div class="bg-white p-8 max-sm w-full relative" onclick="event.stopPropagation()">
+            <h4 class="text-lg italic mb-6 text-center">Datos Bancarios</h4>
+            <div id="account-details" class="space-y-4 text-xs">
+                <div><span class="text-gray-400 block uppercase text-[9px]">Titular</span> Angel Nuñez</div>
+                <div><span class="text-gray-400 block uppercase text-[9px]">Banco</span> Banco Falabella</div>
+                <div><span class="text-gray-400 block uppercase text-[9px]">RUT</span> 26.798.660-6</div>
+                <div><span class="text-gray-400 block uppercase text-[9px]">Cuenta Corriente</span> 19830675976</div>
+            </div>
+            <button id="copy-btn" onclick="copyFullAccount()" class="btn-gold-action w-full mt-8">Copiar Datos de
+                Cuenta</button>
+        </div>
+    </div>
+
+    <div id="dresscode-modal"
+        class="fixed inset-0 bg-black/70 hidden items-center justify-center z-[2000] p-6 backdrop-blur-sm"
+        onclick="hideDressCodeModal()">
+        <div class="bg-white p-6 max-w-md w-full relative" onclick="event.stopPropagation()">
+            <h4 class="text-lg italic mb-4 text-center"><b>Semiformal</b></h4>
+            <img src="https://lh3.googleusercontent.com/u/0/d/1RZb3BbSrf4elRJB0VwF7feXLM8vMuRf3"
+                class="w-full h-auto rounded shadow-lg">
+            <button onclick="hideDressCodeModal()" class="btn-gold-action w-full mt-6">Cerrar</button>
+        </div>
+    </div>
+
+    <footer class="py-12 text-center bg-white border-t border-gray-100">
+        <p class="serif italic text-xl">Vero & Angel</p>
+        <p class="text-[9px] uppercase tracking-widest text-gray-400 mt-2">21 • 03 • 2026</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        const targetDate = new Date("Mar 21, 2026 16:30:00").getTime();
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const gap = targetDate - now;
+            const second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24;
+            if (gap <= 0) return;
+            document.getElementById('days').innerText = Math.floor(gap / day).toString().padStart(2, '0');
+            document.getElementById('hours').innerText = Math.floor((gap % day) / hour).toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = Math.floor((gap % hour) / minute).toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = Math.floor((gap % minute) / second).toString().padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        const musicBtn = document.getElementById('music-trigger');
+        const audio = document.getElementById('wedding-audio');
+        let playing = false;
+
+        // Función para manejar el inicio de la app desde el modal
+        function startApp(withMusic) {
+            document.getElementById('welcome-overlay').style.display = 'none';
+            document.body.classList.remove('modal-open');
+
+            if (withMusic) {
+                toggleMusic();
+            }
+        }
+
+        function toggleMusic() {
+            if (playing) {
+                audio.pause();
+                musicBtn.classList.remove('playing');
+                musicBtn.classList.add('twinkle-effect');
+                musicBtn.innerHTML = '<i data-lucide="music" size="24"></i>';
+            }
+            else {
+                audio.play();
+                musicBtn.classList.add('playing');
+                musicBtn.classList.remove('twinkle-effect');
+                musicBtn.innerHTML = '<i data-lucide="pause" size="24"></i>';
+            }
+            playing = !playing;
+            lucide.createIcons();
+        }
+
+        musicBtn.addEventListener('click', toggleMusic);
+
+        function showGiftModal() { document.getElementById('gift-modal').style.display = 'flex'; }
+        function hideGiftModal() { document.getElementById('gift-modal').style.display = 'none'; }
+        function showDressCodeModal() { document.getElementById('dresscode-modal').style.display = 'flex'; }
+        function hideDressCodeModal() { document.getElementById('dresscode-modal').style.display = 'none'; }
+
+        function copyFullAccount() {
+            const fullDetails = `Titular: Angel Nuñez\nBanco: Banco Falabella\nRUT: 26.798.660-6\nTipo: Cuenta Corriente\nN°: 19830675976`;
+            const el = document.createElement('textarea');
+            el.value = fullDetails;
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            const btn = document.getElementById('copy-btn');
+            const originalText = btn.innerText;
+            btn.innerText = '¡DATOS COPIADOS!';
+            btn.style.backgroundColor = '#27ae60';
+            btn.style.borderColor = '#27ae60';
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.backgroundColor = '';
+                btn.style.borderColor = '';
+            }, 2500);
+        }
+
+        document.getElementById('rsvp-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('form-name').value;
+            const rut = document.getElementById('form-rut').value;
+            const att = document.getElementById('form-attendance').value;
+            const text = `¡Hola! Confirmo mi asistencia para la boda. Nombre: ${name}, RUT: ${rut}, Asistencia: ${att}.`;
+            window.open(`https://wa.me/573025973872?text=${encodeURIComponent(text)}`, '_blank');
+        });
+    </script>
+</body>
+
+</html>

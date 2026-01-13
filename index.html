@@ -64,7 +64,7 @@
 
         .hero-section {
             height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.3)), url('https://lh3.googleusercontent.com/u/0/d/1YkdErhzwdRbIRLLKEZ1TvS3bYjotXA3k') no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.3)), url('https://lh3.googleusercontent.com/u/0/d/1_vMMLdQOyYhmJXhBtn03XJt6wprmGTCr') no-repeat;
             background-size: cover;
             background-position: center center;
             display: flex;
@@ -322,7 +322,7 @@
     <div id="welcome-overlay">
         <div class="welcome-card">
             <h2 class="serif text-2xl mb-2">Bienvenidos a la invitación de</h2>
-            <h1 class="serif text-3xl text-[var(--accent-color)] mb-6">Gabriel y Astrid</h1>
+            <h1 class="serif text-3xl text-[var(--accent-blue)] mb-6">Gabriel y Astrid</h1>
             <p class="text-sm text-gray-500 mb-8 px-4">La música de fondo es parte de la experiencia</p>
 
             <div class="flex flex-col gap-3 items-center">
@@ -379,18 +379,21 @@
     <section class="bg-white py-16">
         <div class="max-w-xl mx-auto px-6 text-center mb-10">
             <h2 class="text-xl md:text-2xl italic leading-relaxed text-gray-700">
-                "… pero al ver tu sonrisa todo va bien. Dulce Amor!"
+                "¡Te amaré hasta que el sol deje de brillar!"
             </h2>
         </div>
         <div class="photo-slider">
             <div class="polaroid-item">
-                <img src="https://lh3.googleusercontent.com/u/0/d/1_vMMLdQOyYhmJXhBtn03XJt6wprmGTCr" alt="bailando">
+                <img src="https://lh3.googleusercontent.com/u/0/d/1_zqMwQIO4HpfEw0pdGBFZrjl3XQq6PZT" alt="montañas">
             </div>
             <div class="polaroid-item">
                 <img src="https://lh3.googleusercontent.com/u/0/d/1hzfz_BdoCnO9iTaK5NUkSx_NPeRXV-BO" alt="atardecer">
             </div>
             <div class="polaroid-item">
-                <img src="https://lh3.googleusercontent.com/u/0/d/1_zqMwQIO4HpfEw0pdGBFZrjl3XQq6PZT" alt="montañas">
+                <img src="https://lh3.googleusercontent.com/u/0/d/1_vMMLdQOyYhmJXhBtn03XJt6wprmGTCr" alt="bailando">
+            </div>
+            <div class="polaroid-item">
+                <img src="https://lh3.googleusercontent.com/u/0/d/1YkdErhzwdRbIRLLKEZ1TvS3bYjotXA3k" alt="playa">
             </div>
             <div class="polaroid-item">
                 <img src="https://lh3.googleusercontent.com/u/0/d/13Ltw_gguQrvKpCizUw77pChV7LfRqX-O" alt="sentados">
@@ -555,7 +558,7 @@
                         required>
                 </div>
                 <div>
-                    <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">RUT</label>
+                    <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Cédula</label>
                     <input id="form-rut" type="text" placeholder="12.345.678-9"
                         class="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#b97600] text-sm"
                         required>
@@ -580,10 +583,12 @@
         <div class="bg-white p-8 max-sm w-full relative" onclick="event.stopPropagation()">
             <h4 class="text-lg italic mb-6 text-center">Datos Bancarios</h4>
             <div id="account-details" class="space-y-4 text-xs">
-                <div><span class="text-gray-400 block uppercase text-[9px]">Titular</span> Angel Nuñez</div>
-                <div><span class="text-gray-400 block uppercase text-[9px]">Banco</span> Banco Falabella</div>
-                <div><span class="text-gray-400 block uppercase text-[9px]">RUT</span> 26.798.660-6</div>
-                <div><span class="text-gray-400 block uppercase text-[9px]">Cuenta Corriente</span> 19830675976</div>
+                <div><span class="text-gray-400 block uppercase text-[9px]">Titular</span> Marlene Rivas</div>
+                <div><span class="text-gray-400 block uppercase text-[9px]">Cédula</span> 7.437.287</div>
+                <div><span class="text-gray-400 block uppercase text-[9px]">Banco</span> Banco Provincial</div>
+                <div><span class="text-gray-400 block uppercase text-[9px]">Cuenta</span> 01080120620100056650
+                </div>
+                <div><span class="text-gray-400 block uppercase text-[9px]">Teléfono</span> 0412-7659441</div>
             </div>
             <button id="copy-btn" onclick="copyFullAccount()" class="btn-gold-action w-full mt-8">Copiar Datos de
                 Cuenta</button>
@@ -661,7 +666,7 @@
         function hideDressCodeModal() { document.getElementById('dresscode-modal').style.display = 'none'; }
 
         function copyFullAccount() {
-            const fullDetails = `Titular: Angel Nuñez\nBanco: Banco Falabella\nRUT: 26.798.660-6\nTipo: Cuenta Corriente\nN°: 19830675976`;
+            const fullDetails = `Titular: Marlene Rivas\nBanco: Banco Provincial\nCédula: 7.437.287\nTipo: Cuenta\nN°: 01080120620100056650`;
             const el = document.createElement('textarea');
             el.value = fullDetails;
             el.setAttribute('readonly', '');
@@ -688,7 +693,7 @@
             const name = document.getElementById('form-name').value;
             const rut = document.getElementById('form-rut').value;
             const att = document.getElementById('form-attendance').value;
-            const text = `¡Hola! Confirmo mi asistencia para la boda. Nombre: ${name}, RUT: ${rut}, Asistencia: ${att}.`;
+            const text = `¡Hola! Confirmo mi asistencia para la boda. Nombre: ${name}, Cédula: ${rut}, Asistencia: ${att}.`;
             window.open(`https://wa.me/573024905168?text=${encodeURIComponent(text)}`, '_blank');
         });
     </script>
